@@ -19,19 +19,6 @@ contract AzbitAirdrop is Ownable {
     // Azbit token
     AzbitTokenInterface public azbitToken;
 
-    
-    // ** EVENTS **
-
-    /**
-     * Event for token address update logging
-     * @param previousToken address of previous token
-     * @param newToken address of new token
-     */
-    event TokenAddressUpdated(
-        address indexed previousToken,
-        address indexed newToken
-    );
-
 
     // ** CONSTRUCTOR **
 
@@ -45,20 +32,10 @@ contract AzbitAirdrop is Ownable {
         public 
     {
         _setToken(tokenAddress);
-        emit TokenAddressUpdated(address(0), azbitToken);
     }
 
 
     // ** ONLY OWNER FUNCTIONS **
-
-    // Set the address of Azbit Token
-    function setToken(address tokenAddress) 
-        external 
-        onlyOwner 
-    {
-        emit TokenAddressUpdated(azbitToken, tokenAddress);
-        _setToken(tokenAddress);
-    }
 
     /**
     * @dev Send tokens to beneficiary by owner
