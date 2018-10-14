@@ -205,30 +205,102 @@ contract AzbitAdvisors is Ownable {
         return (lockState, tokensAmount, withdrawnTokens);
     }
 
+    /**
+    * @dev Gets dates of release stages
+    * @return timestamps of stages
+    */
+    function getStagesDates()
+        public
+        view
+        returns(
+            uint256 stage1,
+            uint256 stage2,
+            uint256 stage3,
+            uint256 stage4
+        )
+    {
+        uint256 releaseDate = azbitToken.releaseDate();
+
+        return (
+            releaseDate + 90 days,
+            releaseDate + 180 days,
+            releaseDate + 270 days,
+            releaseDate + 365 days
+        );
+    }
+
+    /**
+    * @dev Gets current stage of release
+    * @return Stage number from 0 to 4
+    */
     function getCurrentStage()
         public
         view
         returns(uint256 stage)
     {
-        uint256 releaseDate = azbitToken.releaseDate();
+        (uint256 stage1, uint256 stage2, uint256 stage3, uint256 stage4) = getStagesDates();
 
-        if (now > releaseDate + 1 years) {
+        if (now > stage4) {
             return 4;
-        } else if (now > releaseDate + 270 days) {
+        } else if (now > stage3) {
             return 3;
-        } else if (now > releaseDate + 180 days) {
+        } else if (now > stage2) {
             return 2;
-        } else if (now > releaseDate + 90 days) {
+        } else if (now > stage1) {
             return 1;
         }
 
         return 0;
     }
 
+    /**
+    * @dev Time until the next unlock of tokens
+    * @return Time in seconds until the next unlock
+    */
+    function timeUntilNextUnlock()
+        public
+        view
+        returns(uint256 time)
+    {
+        (uint256 stage1, uint256 stage2, uint256 stage3, uint256 stage4) = getStagesDates();
+
+        uint256 currentStage = getCurrentStage();
+
+        if (currentStage == 0) {
+            // until first unlock
+            return stage1.sub(now);
+        } else if (currentStage == 1) {
+            // until second unlock
+            return stage2.sub(now);
+        } else if (currentStage == 2) {
+            // until third unlock
+            return stage3.sub(now);
+        } else if (currentStage == 3) {
+            // until last unlock
+            return stage4.sub(now);
+        } else {
+            // all tokens unlocked
+            return 0;
+        }
+    }
+
+    /**
+    * @dev Calculates the amount that has already available but hasn't been withdrawn yet
+    * @param advisorAddr The address of advisor
+    * @return The amount of tokens
+    */
+    function releasableAmount(address advisorAddr) 
+        public 
+        view 
+        returns (uint256 amount)
+    {
+        return _getAmountForWithdrawal(advisorAddr);
+    }
+
 
     // ** PRIVATE HELPER FUNCTIONS **
 
-    // Helper: get current tokens for withdrawal by advisor
+    // Helper: get current tokens amount for withdrawal by advisor
     function _getAmountForWithdrawal(address advisorAddr)
         internal
         view
