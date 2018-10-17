@@ -66,8 +66,13 @@ contract AzbitAdvisors is Ownable {
     // ** STRUCTS **
 
     struct AdvisorInfo {
+        // @dev Lock State of current advisor
         TokenLockState lockState;
+
+        // @dev The amount of tokens for current advisor
         uint256 tokensAmount;
+
+        // @dev The amount of tokens withdrawn by the advisor
         uint256 withdrawnTokens;
     }
 
@@ -188,7 +193,7 @@ contract AzbitAdvisors is Ownable {
     /**
     * @dev Gets the advisor info of the specified address
     * @param advisorAddr address of advisor 
-    * @return Token lock state and tokens amount of current advisor
+    * @return Token lock state, tokens amount of current advisor and amount of withdrawn tokens
     */
     function getAdvisorInfo(address advisorAddr) 
         public 
