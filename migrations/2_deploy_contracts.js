@@ -2,6 +2,7 @@ var AzbitToken = artifacts.require("./AzbitToken.sol");
 var Bounty = artifacts.require("./AzbitBounty.sol");
 var Airdrop = artifacts.require("./AzbitAirdrop.sol");
 var Advisors = artifacts.require("./AzbitAdvisors.sol");
+var USResidents = artifacts.require("./AzbitUSResidents.sol");
 
 const initialSupply = 1e9;
 const tokenName = "Azbit Token";
@@ -18,6 +19,9 @@ module.exports = function(deployer) {
       AzbitToken.address);
   }).then(function() {
     return deployer.deploy(Advisors,
+      AzbitToken.address);
+  }).then(function() {
+    return deployer.deploy(USResidents,
       AzbitToken.address);
   })
 };
