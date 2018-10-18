@@ -7,6 +7,7 @@ pragma solidity ^0.4.24;
 import "./ownership/Ownable.sol";
 import "./AzbitTokenInterface.sol";
 import "./math/SafeMath.sol";
+import "./math/SafeMath128.sol";
 
 
 /**
@@ -15,6 +16,8 @@ import "./math/SafeMath.sol";
  */
 contract AzbitUSResidents is Ownable {
     using SafeMath for uint256;
+    using SafeMath128 for uint128;
+
 
     // ** EVENTS **
 
@@ -47,16 +50,16 @@ contract AzbitUSResidents is Ownable {
 
     struct InvestorInfo {
         // @dev The amount of tokens buy by the investor
-        uint256 totalBuy;
+        uint128 totalBuy;
 
         // @dev The amount of tokens withdrawn by the investor
-        uint256 totalWithdrawn;
+        uint128 totalWithdrawn;
 
         // @dev Current number of withdrawal
         uint32 currentWithdrawal;
 
         // @dev The array of token amounts
-        uint256[] tokenAmounts;
+        uint128[] tokenAmounts;
 
         // @dev The array of unlock times
         uint32[] unlockTimes;
@@ -72,7 +75,13 @@ contract AzbitUSResidents is Ownable {
     mapping(address => InvestorInfo) public investors;
 
     // Lockout period after token purchase
-    uint256 public lockPeriod = 365 days;
+    uint256 public constant lockPeriod = 365 days;
+
+
+    // ** PRIVATE STATE VARIABLES **
+
+    // Max purchase of tokens for one withdrawal (for not reaching gas limit)
+    uint256 private constant MAX_WITHDRAWAL_LIMIT = 1000;
 
     
     // ** CONSTRUCTOR **
@@ -141,7 +150,7 @@ contract AzbitUSResidents is Ownable {
         require(amount > 0, "no tokens for withdrawal");
 
         // update states
-        investors[msg.sender].totalWithdrawn = investors[msg.sender].totalWithdrawn.add(amount);
+        investors[msg.sender].totalWithdrawn = investors[msg.sender].totalWithdrawn.add(uint128(amount));
         investors[msg.sender].currentWithdrawal += uint32(count);
         
         require(azbitToken.transfer(msg.sender, amount), "tokens are not transferred");
@@ -229,6 +238,11 @@ contract AzbitUSResidents is Ownable {
         view 
         returns (uint256 ts)
     {
+        // The address is not in the list of investors
+        if (investors[beneficiary].tokenAmounts.length == 0) {
+            return 0;
+        }
+
         return investors[beneficiary].unlockTimes[investors[beneficiary].unlockTimes.length - 1];
     }
 
@@ -244,7 +258,7 @@ contract AzbitUSResidents is Ownable {
             uint256 totalBuy,
             uint256 totalWithdrawn,
             uint32 currentWithdrawal,
-            uint256[] tokenAmounts,
+            uint128[] tokenAmounts,
             uint32[] unlockTimes
         )
     {
@@ -274,9 +288,10 @@ contract AzbitUSResidents is Ownable {
         uint256 curWithdrawal = investors[beneficiary].currentWithdrawal;
 
         while (curWithdrawal < investors[beneficiary].tokenAmounts.length &&
-                investors[beneficiary].unlockTimes[curWithdrawal] < now && number++ < 100) {
+                investors[beneficiary].unlockTimes[curWithdrawal] < now && number < MAX_WITHDRAWAL_LIMIT) {
             amount = amount.add(investors[beneficiary].tokenAmounts[curWithdrawal]);
             curWithdrawal++;
+            number++;
         }
 
         return(amount, number);
@@ -299,10 +314,11 @@ contract AzbitUSResidents is Ownable {
     {
         require(beneficiary != address(0), "Address cannot be 0x0");
         require(amount > 0, "Amount cannot be zero");
+        require(amount == uint128(amount), "Too large amount");
 
         // update states
-        investors[beneficiary].totalBuy = investors[beneficiary].totalBuy.add(amount);
-        investors[beneficiary].tokenAmounts.push(amount);
+        investors[beneficiary].totalBuy = investors[beneficiary].totalBuy.add(uint128(amount));
+        investors[beneficiary].tokenAmounts.push(uint128(amount));
         investors[beneficiary].unlockTimes.push(uint32(now + lockPeriod));
 
         emit BalanceIncreased(beneficiary, amount, tokenBalanceOf(beneficiary));
