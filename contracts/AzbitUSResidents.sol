@@ -75,7 +75,7 @@ contract AzbitUSResidents is Ownable {
     mapping(address => InvestorInfo) public investors;
 
     // Lockout period after token purchase
-    uint256 public constant lockPeriod = 365 days;
+    uint256 public constant lockPeriod = 365 days; // 1 year
 
 
     // ** PRIVATE STATE VARIABLES **
