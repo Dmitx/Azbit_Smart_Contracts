@@ -1,7 +1,7 @@
 # Smart Contracts for [Azbit](https://azbit.com/)
 
 <p align="center">
-  <img width="500" height ="500"  alt="Azbit logo" src = "./assets/logo-azbit.jpg">
+  <img width="300" height ="300"  alt="Azbit logo" src = "./assets/logo-azbit.jpg">
 </p>
 
 # Dependencies 
