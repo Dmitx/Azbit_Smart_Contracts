@@ -12,7 +12,7 @@ import "./math/SafeMath128.sol";
 
 /**
  * @title AzbitUSResidents
- * @dev Smart contracts for distribution tokens to US Azbit investors
+ * @dev Smart contract for distribution tokens to US Azbit investors
  */
 contract AzbitUSResidents is Ownable {
     using SafeMath for uint256;
@@ -141,7 +141,6 @@ contract AzbitUSResidents is Ownable {
     // ** EXTERNAL FUNCTIONS **
 
     // Withdrawal tokens from this contract
-    // Available when the contract is not paused
     function withdrawTokens()
         external
     {

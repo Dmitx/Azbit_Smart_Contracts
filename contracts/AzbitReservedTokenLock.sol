@@ -11,7 +11,7 @@ import "./AzbitPriceTicker.sol";
 
 /**
  * @title AzbitReservedTokenLock
- * @dev Smart contracts for reserved tokens
+ * @dev Smart contract for reserved tokens
  */
 contract AzbitReservedTokenLock is AzbitPriceTicker {
     using SafeMath for uint256;

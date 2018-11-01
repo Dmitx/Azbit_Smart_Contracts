@@ -10,7 +10,7 @@ import "./oraclize/oraclizeAPI_0.4.25.sol";
 
 /**
  * @title AzbitPriceTicker
- * @dev Smart contracts for check token price
+ * @dev Smart contract for check token price
  */
 contract AzbitPriceTicker is Ownable, usingOraclize {
 
@@ -20,16 +20,16 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
     // Event for new oraclize query logging
     event NewOraclizeQuery(string description);
 
-    // Event for new AzbitToken price ticker
+    // Event for new AzbitToken price ticker logging
     event NewPriceTicker(bytes32 myid, string price, bytes proof);
 
-    // Event for new gas limit
+    // Event for new gas limit logging
     event SetNewGasLimit(uint256 newGasLimit);
 
-    // Event for new gas price
+    // Event for new gas price logging
     event SetNewGasPrice(uint256 newGasPrice);
 
-    // Event for set oraclize proof
+    // Event for set oraclize proof logging
     event SetProof(string proofType);
 
 

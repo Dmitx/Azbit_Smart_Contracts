@@ -11,7 +11,7 @@ import "./math/SafeMath.sol";
 
 /**
  * @title AzbitAdvisors
- * @dev Smart contracts for distribution tokens to Azbit advisors
+ * @dev Smart contract for distribution tokens to Azbit advisors
  */
 contract AzbitAdvisors is Ownable {
     using SafeMath for uint256;
