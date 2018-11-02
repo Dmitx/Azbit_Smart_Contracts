@@ -213,7 +213,7 @@ Function | Params | Description
 **oraclizeGasPrice** | –– | Oraclize query gas price.
 **updateTime** | –– | Oraclize time of price update.<br> Each 6 hours.
 **getCurrentCount** | (uint256) **x2Count**<br> (uint256) **x3Count**<br> (uint256) **x4Count**<br> (uint256) **x5Count** | Gets number of price satisfactory measurements.
-**getCurrentDays** | (uint256) **x2Days**<br> (uint256) **x3Days**<br> (uint256) **4Days**<br> (uint256) **x5Days** | Gets number of price satisfactory days.
+**getCurrentDays** | (uint256) **x2Days**<br> (uint256) **x3Days**<br> (uint256) **x4Days**<br> (uint256) **x5Days** | Gets number of price satisfactory days.
 
 
 
