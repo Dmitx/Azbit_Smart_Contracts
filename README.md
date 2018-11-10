@@ -188,7 +188,7 @@ Event | Params | Description
 
 Function | Params | Description
 ------------ | ------------- | -------------
-**constructor** | (uint256) **tokenPrice** | Constructor of AzbitPriceTicker Contract.<br> Initial price of AzbitToken in USD cents.<br> * payable
+**constructor** | (uint256) **tokenPrice** | Constructor of AzbitPriceTicker Contract.<br> Initial price of AzbitToken in USD * 1e9.<br> * payable
 **startUpdatingPrice** | –– | Start updating of price.<br> * payable
 **setGasLimit** | (uint256) **gasLimit** | Set new gas limit for oraclize query.
 **setGasPrice** | (uint256) **gasPrice** | Set new gas price for oraclize query.
@@ -208,7 +208,7 @@ Function | Params | Description
 
 Function | Params | Description
 ------------ | ------------- | -------------
-**initialPrice** | –– | Initial price of AzbitToken in USD cents.
+**initialPrice** | –– | Initial price of AzbitToken in USD * 1e9.
 **oraclizeGasLimit** | –– | Oraclize query gas limit.
 **oraclizeGasPrice** | –– | Oraclize query gas price.
 **updateTime** | –– | Oraclize time of price update.<br> Each 6 hours.
