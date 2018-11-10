@@ -35,7 +35,7 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
 
     // ** PUBLIC STATE VARIABLES **
 
-    // Initial price of AzbitToken in USD cents
+    // Initial price of AzbitToken in USD * 1e9
     uint256 public initialPrice;
 
     // Oraclize query gas limit
@@ -79,7 +79,7 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
 
     /**
     * @dev Constructor of AzbitPriceTicker Contract
-    * @param tokenPrice initial price of AzbitToken in USD cents
+    * @param tokenPrice initial price of AzbitToken in USD * 1e9
     */
     constructor(
         uint256 tokenPrice
@@ -279,7 +279,7 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
         // this ensures the callback for a given queryID never called twice
         _validIds[queryId] = false;
 
-        uint256 price = parseInt(result, 2); // in USD cent
+        uint256 price = parseInt(result, 9); // price in USD * 1e9
         uint256 initPrice = initialPrice; // gas optimization
 
         // update states
