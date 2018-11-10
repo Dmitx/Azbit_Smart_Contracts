@@ -17,6 +17,12 @@ contract AzbitReservedTokenLock is AzbitPriceTicker {
     using SafeMath for uint256;
 
 
+    // ** EVENTS **
+
+    // Event for token withdrawal logging
+    event TokenWithdrawn(address indexed to, uint256 value);
+
+
     // ** PUBLIC STATE VARIABLES **
 
     // Azbit token
@@ -73,6 +79,8 @@ contract AzbitReservedTokenLock is AzbitPriceTicker {
 
         // withdrawal to withdrawalAddress
         require(azbitToken.transfer(withdrawalAddress, amount), "tokens are not transferred");
+
+        emit TokenWithdrawn(withdrawalAddress, amount);
     }
 
     
