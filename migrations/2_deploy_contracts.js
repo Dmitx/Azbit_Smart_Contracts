@@ -6,6 +6,7 @@ var USResidents = artifacts.require("./AzbitUSResidents.sol");
 var TeamTokenLock = artifacts.require("./AzbitTeamTokenLock.sol");
 var ReservedTokenLock = artifacts.require("./AzbitReservedTokenLock.sol");
 
+const initialETH = 1e17; // initial balance for Oraclize update
 const initialSupply = 1e9;
 const tokenName = "Azbit Token";
 const tokenSymbol = "AZ";
@@ -30,9 +31,11 @@ module.exports = function(deployer) {
       AzbitToken.address);
   }).then(function() {
     return deployer.deploy(TeamTokenLock,
-      AzbitToken.address, initialTokenPrice, teamAddress);
+      AzbitToken.address, initialTokenPrice, teamAddress,
+      {value: initialETH});  // send eth
   }).then(function() {
     return deployer.deploy(ReservedTokenLock,
-      AzbitToken.address, initialTokenPrice, reservedAddress);
+      AzbitToken.address, initialTokenPrice, reservedAddress,
+      {value: initialETH});  // send eth
   })
 };
