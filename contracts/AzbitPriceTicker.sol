@@ -91,7 +91,7 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
         initialPrice = tokenPrice;
 
         // set oraclize query gas limit
-        oraclizeGasLimit = 200000;
+        oraclizeGasLimit = 140000;
 
         // set oraclize gas price
         oraclizeGasPrice = 10000000000 wei;
@@ -144,8 +144,9 @@ contract AzbitPriceTicker is Ownable, usingOraclize {
         onlyOwner
     {
         require(gasPrice > 0, "gasPrice cannot be zero");
-        oraclize_setCustomGasPrice(gasPrice);
-        emit SetNewGasPrice(gasPrice);
+        oraclizeGasPrice = gasPrice;
+        oraclize_setCustomGasPrice(oraclizeGasPrice);
+        emit SetNewGasPrice(oraclizeGasPrice);
     }
 
     /**
